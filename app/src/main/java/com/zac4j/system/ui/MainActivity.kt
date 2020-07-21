@@ -39,9 +39,10 @@ class MainActivity : AppCompatActivity() {
 
     setSupportActionBar(binding.toolbar)
 
+    val networkPage = NetworkFragment()
     val touchPage = TouchFragment()
     supportFragmentManager.beginTransaction()
-        .add(R.id.fragment_container, touchPage)
+        .add(R.id.fragment_container, networkPage)
         .addToBackStack(null)
         .commit()
 

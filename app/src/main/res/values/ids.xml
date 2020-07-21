@@ -2,4 +2,5 @@
 <resources>
   <item name="touch_sample_btn" type="id" />
   <item name="touch_sample_container" type="id" />
+  <item name="network_msg_list" type="id" />
 </resources>
