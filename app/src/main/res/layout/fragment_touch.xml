@@ -6,7 +6,7 @@
 
     <variable
       name="viewModel"
-      type="com.zac4j.system.data.TouchViewModel" />
+      type="com.zac4j.system.ui.data.TouchViewModel" />
   </data>
 
   <com.zac4j.system.ui.widget.CustomLayout

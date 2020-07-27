@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import com.zac4j.system.R
-import com.zac4j.system.data.TouchViewModel
+import com.zac4j.system.ui.data.TouchViewModel
 import com.zac4j.system.databinding.FragmentTouchBinding
 import com.zac4j.system.util.Logger
 
