@@ -100,84 +100,87 @@ class NetworkFragment : Fragment() {
     mHandler.removeCallbacksAndMessages(null)
   }
 
-  private fun connectWebSocket(
-    hostname: String,
-    port: Int
-  ) {
-    val httpClient = OkHttpClient.Builder()
-        .pingInterval(PING_INTERVAL, TimeUnit.SECONDS)
-        .build()
+  /**
+   * 连接 WebSocket 服务器
+   */
+private fun connectWebSocket(
+  hostname: String,
+  port: Int
+) {
+  val httpClient = OkHttpClient.Builder()
+      .pingInterval(PING_INTERVAL, TimeUnit.SECONDS)
+      .build()
 
-    val url = "ws://${hostname}:${port}"
-    Logger.i(TAG, "connectWebSocket", "connect url -> $url")
+  val url = "ws://${hostname}:${port}"
+  Logger.i(TAG, "connectWebSocket", "connect url -> $url")
 
-    val request = Request.Builder()
-        .url(url)
-        .build()
+  val request = Request.Builder()
+      .url(url)
+      .build()
 
-    httpClient.newWebSocket(request, object : WebSocketListener() {
-      override fun onOpen(
-        webSocket: WebSocket,
-        response: Response
-      ) {
-        super.onOpen(webSocket, response)
-        Logger.i(TAG, "onOpen", "response -> ${response.message}")
-        // While web socket is opened create our interval work
-        createIntervalWork(webSocket)
-      }
+  httpClient.newWebSocket(request, object : WebSocketListener() {
+    override fun onOpen(
+      webSocket: WebSocket,
+      response: Response
+    ) {
+      super.onOpen(webSocket, response)
+      Logger.i(TAG, "onOpen", "response -> ${response.message}")
+      // While web socket is opened create our interval work
+      createIntervalWork(webSocket)
+    }
 
-      override fun onMessage(
-        webSocket: WebSocket,
-        text: String
-      ) {
-        super.onMessage(webSocket, text)
-        Logger.i(TAG, "onMessage", "text -> $text")
-        if (text.isNotEmpty()) {
-          mHandler.post {
-            mAdapter.addMessage("pong -> $text")
-          }
-        }
-      }
-
-      override fun onMessage(
-        webSocket: WebSocket,
-        bytes: ByteString
-      ) {
-        super.onMessage(webSocket, bytes)
-        Logger.i(TAG, "onMessage", "bytes -> $bytes")
+    override fun onMessage(
+      webSocket: WebSocket,
+      text: String
+    ) {
+      super.onMessage(webSocket, text)
+      Logger.i(TAG, "onMessage", "text -> $text")
+      if (text.isNotEmpty()) {
         mHandler.post {
-          mAdapter.addMessage(bytes.toString())
+          mAdapter.addMessage("pong -> $text")
         }
       }
+    }
 
-      override fun onClosed(
-        webSocket: WebSocket,
-        code: Int,
-        reason: String
-      ) {
-        super.onClosed(webSocket, code, reason)
-        Logger.i(TAG, "onClosed", "reason -> $reason")
+    override fun onMessage(
+      webSocket: WebSocket,
+      bytes: ByteString
+    ) {
+      super.onMessage(webSocket, bytes)
+      Logger.i(TAG, "onMessage", "bytes -> $bytes")
+      mHandler.post {
+        mAdapter.addMessage(bytes.toString())
       }
+    }
 
-      override fun onClosing(
-        webSocket: WebSocket,
-        code: Int,
-        reason: String
-      ) {
-        super.onClosing(webSocket, code, reason)
-        Logger.i(TAG, "onClosing", "reason -> $reason")
-      }
+    override fun onClosed(
+      webSocket: WebSocket,
+      code: Int,
+      reason: String
+    ) {
+      super.onClosed(webSocket, code, reason)
+      Logger.i(TAG, "onClosed", "reason -> $reason")
+    }
 
-      override fun onFailure(
-        webSocket: WebSocket,
-        t: Throwable,
-        response: Response?
-      ) {
-        super.onFailure(webSocket, t, response)
-        Logger.i(TAG, "onFailure", "${t.message}")
-      }
-    })
-  }
+    override fun onClosing(
+      webSocket: WebSocket,
+      code: Int,
+      reason: String
+    ) {
+      super.onClosing(webSocket, code, reason)
+      Logger.i(TAG, "onClosing", "reason -> $reason")
+    }
+
+    override fun onFailure(
+      webSocket: WebSocket,
+      t: Throwable,
+      response: Response?
+    ) {
+      super.onFailure(webSocket, t, response)
+      Logger.i(TAG, "onFailure", "${t.message}")
+    }
+  })
+}
 
   /**
    * Create interval work send message.
