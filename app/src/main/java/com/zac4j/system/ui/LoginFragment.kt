@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
+import androidx.lifecycle.ViewModelProvider
 import com.zac4j.system.R
 import com.zac4j.system.databinding.FragmentLoginBinding
+import com.zac4j.system.network.LoginRepository
 import com.zac4j.system.ui.data.LoginViewModel
 
 class LoginFragment : Fragment() {
@@ -18,8 +19,10 @@ class LoginFragment : Fragment() {
 
   private val viewModel by lazy {
     activity?.let {
-      AndroidViewModelFactory.getInstance(it.application)
-          .create(LoginViewModel::class.java)
+      val repo = LoginRepository()
+      ViewModelProvider(this, LoginViewModelFactory(it.application, repo)).get(
+          LoginViewModel::class.java
+      )
     }
   }
 

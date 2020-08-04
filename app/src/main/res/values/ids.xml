@@ -4,4 +4,5 @@
   <item name="touch_sample_container" type="id" />
   <item name="network_msg_list" type="id" />
   <item name="login_btn" type="id" />
+  <item name="async_ui_tv" type="id" />
 </resources>
