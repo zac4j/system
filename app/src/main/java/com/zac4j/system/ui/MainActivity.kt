@@ -41,8 +41,9 @@ class MainActivity : AppCompatActivity() {
 
     val networkPage = NetworkFragment()
     val touchPage = TouchFragment()
+    val dialPage = DialFragment()
     supportFragmentManager.beginTransaction()
-        .add(R.id.fragment_container, networkPage)
+        .add(R.id.fragment_container, dialPage)
         .addToBackStack(null)
         .commit()
 
