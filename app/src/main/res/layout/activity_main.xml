@@ -7,7 +7,7 @@
 
     <variable
       name="viewModel"
-      type="com.zac4j.system.data.MainViewModel" />
+      type="com.zac4j.system.ui.data.MainViewModel" />
   </data>
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout

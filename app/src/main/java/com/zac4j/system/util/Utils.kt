@@ -4,12 +4,9 @@ import android.app.Activity
 import android.content.ClipDescription
 import android.content.ClipboardManager
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.util.DisplayMetrics
-import com.zac4j.system.ui.NetworkFragment
-import com.zac4j.system.ui.NetworkFragment.Companion
-import okhttp3.Handshake
+import android.view.View
+import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
@@ -18,6 +15,7 @@ import okhttp3.mockwebserver.MockWebServer
 import okio.ByteString
 import java.io.Closeable
 import java.io.IOException
+import kotlin.coroutines.resume
 
 /**
  * Common useful methods.
@@ -133,13 +131,46 @@ object Utils {
     return mockWebServer
   }
 
-  fun closeQuietly(c: Closeable?) {
-    if (c != null) {
+  /**
+   * Close quietly
+   */
+  fun Closeable?.closeQuietly() {
+    if (this != null) {
       try {
-        c.close()
+        this.close()
       } catch (e: IOException) {
         e.printStackTrace()
       }
     }
   }
+
+  suspend fun View.awaitNextLayout() = suspendCancellableCoroutine<Unit> { continuation ->
+
+    val listener = object : View.OnLayoutChangeListener {
+      override fun onLayoutChange(
+        v: View?,
+        left: Int,
+        top: Int,
+        right: Int,
+        bottom: Int,
+        oldLeft: Int,
+        oldTop: Int,
+        oldRight: Int,
+        oldBottom: Int
+      ) {
+        // remove listener after on layout change
+        v?.removeOnLayoutChangeListener(this)
+        // wake up coroutine and resume execution
+        continuation.resume(Unit)
+      }
+    }
+
+    // remove listener on cancel coroutine
+    continuation.invokeOnCancellation { removeOnLayoutChangeListener(listener) }
+
+    // add listener to view
+    addOnLayoutChangeListener(listener)
+
+  }
+
 }

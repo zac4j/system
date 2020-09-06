@@ -12,11 +12,14 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import com.zac4j.system.R
 import com.zac4j.system.R.layout
-import com.zac4j.system.data.MainViewModel
+import com.zac4j.system.ui.data.MainViewModel
 import com.zac4j.system.databinding.ActivityMainBinding
 import com.zac4j.system.util.screenshot.ScreenshotHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
   companion object {
     private const val TAG = "MainActivity"
@@ -38,8 +41,9 @@ class MainActivity : AppCompatActivity() {
     binding.lifecycleOwner = this
 
     setSupportActionBar(binding.toolbar)
-
+    // webSocket test page
     val networkPage = NetworkFragment()
+    // touch event dispatch test page
     val touchPage = TouchFragment()
     val dialPage = DialFragment()
     supportFragmentManager.beginTransaction()
@@ -50,6 +54,11 @@ class MainActivity : AppCompatActivity() {
     binding.fab.setOnClickListener { view ->
       showSnackBar(view)
     }
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    cancel()
   }
 
   private fun showSnackBar(view: View) {

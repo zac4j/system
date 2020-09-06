@@ -1,4 +1,4 @@
-package com.zac4j.system.data
+package com.zac4j.system.ui.data
 
 import androidx.lifecycle.ViewModel
 
