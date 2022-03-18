@@ -69,6 +69,7 @@ object PermissionHandler {
       is PermissionResult.Denied -> {
         pendingTask?.onPermissionDenied()
       }
+      else -> {}
     }
   }
 

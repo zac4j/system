@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     setSupportActionBar(binding.toolbar)
     // webSocket test page
-    val networkPage = NetworkFragment()
+    val networkPage = WebSocketFragment()
     // touch event dispatch test page
     val touchPage = TouchFragment()
     val dialPage = DialFragment()

@@ -2,6 +2,7 @@ package com.zac4j.system.ui
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,7 @@ import java.util.concurrent.TimeUnit
  * @author: zac
  * @date: 2020/7/21
  */
-class NetworkFragment : Fragment() {
+class WebSocketFragment : Fragment() {
 
   companion object {
     private const val TAG = "NetworkFragment"
@@ -65,7 +66,7 @@ class NetworkFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    return inflater.inflate(R.layout.fragment_network, container, false)
+    return inflater.inflate(R.layout.fragment_websocket, container, false)
   }
 
   override fun onViewCreated(
@@ -82,7 +83,7 @@ class NetworkFragment : Fragment() {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
 
-    mHandler = Handler()
+    mHandler = Handler(Looper.getMainLooper())
 
     val runnable = Runnable {
       mServer?.let {
